@@ -1,27 +1,9 @@
 import json
 import os
 import sys
-import platform
 
 CONFIG_FILE = "config.json"
 CONFIG_TEMPLATE_FILE = "config.template.json"
-
-def get_default_clients():
-    """Get default clients based on platform."""
-    system = platform.system()
-    if system == "Darwin":  # macOS
-        return [
-            {
-                "name": "claude",
-                "config_path": "~/Library/Application Support/Claude/claude_desktop_config.json"
-            },
-            {
-                "name": "cline",
-                "config_path": "~/Library/Application Support/Cursor/User/globalStorage/rooveterinaryinc.roo-cline/settings/cline_mcp_settings.json"
-            }
-        ]
-    # Add other platforms as needed
-    return []
 
 def expand_path(path):
     """Expand ~ to user's home directory and resolve any relative paths."""
@@ -35,16 +17,9 @@ def init_config():
                 config = json.load(f)
         else:
             config = {
-                "clients": get_default_clients(),
+                "clients": [],
                 "memory_paths": {}
             }
-        
-        # Expand paths in config
-        for client in config["clients"]:
-            client["config_path"] = expand_path(client["config_path"])
-        for name, path in config["memory_paths"].items():
-            config["memory_paths"][name] = expand_path(path)
-        
         save_config(config)
         print("Initialized new configuration file")
     return load_config()
