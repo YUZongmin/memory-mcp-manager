@@ -1,107 +1,60 @@
 # Memory MCP Manager
 
-A tool to manage and switch between different memory paths for Claude clients using the Model Context Protocol (MCP) memory server.
-
-This project helps manage memory configurations for Claude clients that use the [mcp-knowledge-graph](https://github.com/shaneholloman/mcp-knowledge-graph) server for persistent memory storage.
-
-## Features
-
-- Manage multiple memory paths with easy-to-remember names
-- Quick switching between different memory configurations
-- Support for multiple Claude clients (Claude Desktop, Cline, etc.)
-- Persistent storage of memory paths and client configurations
-- Automatic initialization with default settings
+A tool to manage and switch between different memory paths for Claude clients using the [mcp-knowledge-graph](https://github.com/shaneholloman/mcp-knowledge-graph) server.
 
 ## Prerequisites
 
 - Python 3.x
-- A Claude client that uses the MCP memory server (e.g., Claude Desktop, Cline)
-- [mcp-knowledge-graph](https://github.com/shaneholloman/mcp-knowledge-graph) server installed and configured
+- A Claude client with MCP memory server
+- [mcp-knowledge-graph](https://github.com/shaneholloman/mcp-knowledge-graph) installed
 
-## Installation
-
-1. Clone the repository
-2. Make the script executable: `chmod +x memory.sh`
-3. The first time you run `./memory.sh`, it will automatically create a configuration file based on the template
-
-## Usage
-
-### Basic Commands
-
-1. Initialize or reset configuration:
+## Quick Start
 
 ```bash
+# Install
+git clone https://github.com/yourusername/memory-mcp-manager.git
+cd memory-mcp-manager
+chmod +x memory.sh
+
+# Setup
 ./memory.sh init
+./memory.sh add-client my-claude "/path/to/claude/config.json"
+./memory.sh add project1 "~/projects/project1/memory.jsonl"
+./memory.sh switch project1
 ```
 
-2. List all configured memory paths:
+## Commands
 
 ```bash
-./memory.sh list
-```
+# Client Management
+./memory.sh add-client <name> <config_path>  # Add a Claude client
+./memory.sh list-clients                     # List configured clients
 
-3. Switch to a specific memory configuration:
-
-```bash
-./memory.sh switch <name>
-```
-
-4. Add a new memory path:
-
-```bash
-./memory.sh add <name> <path>
-```
-
-5. Remove a memory path:
-
-```bash
-./memory.sh remove <name>
-```
-
-### Client Management
-
-1. List configured clients:
-
-```bash
-./memory.sh list-clients
-```
-
-2. Add a new client:
-
-```bash
-./memory.sh add-client <name> <config_path>
+# Memory Management
+./memory.sh add <name> <path>     # Add a memory path
+./memory.sh remove <name>         # Remove a memory path
+./memory.sh switch <name>         # Switch to a memory path
+./memory.sh list                  # List all memory paths
 ```
 
 ## Configuration
 
-The configuration is stored in two files:
+Your settings are stored in `config.json` (git-ignored):
 
-- `config.template.json`: Version-controlled template with default settings
-- `config.json`: Your personal configuration file (git-ignored)
-
-### Example Client Paths
-
-For macOS:
-
-```
-~/Library/Application Support/Claude/claude_desktop_config.json
-~/Library/Application Support/Cursor/User/globalStorage/rooveterinaryinc.roo-cline/settings/cline_mcp_settings.json
-```
-
-### Example Memory Path Structure
-
-Memory paths typically follow a structure like:
-
-```
-~/path/to/project/memory.jsonl
+```json
+{
+  "clients": [
+    {
+      "name": "my-claude",
+      "config_path": "/path/to/claude/config.json"
+    }
+  ],
+  "memory_paths": {
+    "project1": "/path/to/project1/memory.jsonl"
+  }
+}
 ```
 
 ## How It Works
 
-This tool manages the memory path configuration for Claude clients that use the [mcp-knowledge-graph](https://github.com/shaneholloman/mcp-knowledge-graph) server. The server enables persistent memory through a local knowledge graph, allowing Claude to maintain context and information across sessions.
-
-When you switch memory paths, the tool updates the configuration files of all registered Claude clients to use the new memory path. This allows you to maintain separate memory contexts for different projects or purposes.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+When switching memory paths, the tool updates all registered Claude clients to use the new memory path, allowing you to maintain separate memory contexts for different projects.
