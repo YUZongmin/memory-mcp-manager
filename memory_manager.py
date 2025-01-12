@@ -3,7 +3,6 @@ import os
 import sys
 
 CONFIG_FILE = "config.json"
-CONFIG_TEMPLATE_FILE = "config.template.json"
 
 def expand_path(path):
     """Expand ~ to user's home directory and resolve any relative paths."""
@@ -12,14 +11,10 @@ def expand_path(path):
 def init_config():
     """Initialize configuration if it doesn't exist."""
     if not os.path.exists(CONFIG_FILE):
-        if os.path.exists(CONFIG_TEMPLATE_FILE):
-            with open(CONFIG_TEMPLATE_FILE, 'r') as f:
-                config = json.load(f)
-        else:
-            config = {
-                "clients": [],
-                "memory_paths": {}
-            }
+        config = {
+            "clients": [],
+            "memory_paths": {}
+        }
         save_config(config)
         print("Initialized new configuration file")
     return load_config()
